@@ -1,20 +1,9 @@
-### 部署成功
-<img width="1312" height="750" alt="image" src="https://github.com/user-attachments/assets/17ab8bc8-9bc3-44d8-8f44-bc5906ed7347" />
-
-
-
-###  配套工具
-
-| 类型 | 描述 | 链接 |
-| :--- | :--- | :--- |
-|  **生成节点** | 一键生成所有优选 IP/域名的 VLESS 链接 | [https://cfy.jhb.ovh/](https://cfy.jhb.ovh/) |
-
 
 ###  部署
-无需混淆，混淆即1101
-混肴前增加
-const authToken = '6f52a2ef-2a34-4937-b26f-9a5883092d66'; //不可以重复赋值
-let authToken = '6f52a2ef-2a34-4937-b26f-9a5883092d66'; //可以在后续中给与重复赋值
+| 无需混淆，混淆即1101
+| 混肴前增加
+| const authToken = '6f52a2ef-2a34-4937-b26f-9a5883092d66'; //不可以重复赋值
+| let authToken = '6f52a2ef-2a34-4937-b26f-9a5883092d66'; //可以在后续中给与重复赋值
 	
 | 变量名 | 值 | 说明 |
 | :--- | :--- | :--- |
