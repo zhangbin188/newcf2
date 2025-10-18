@@ -1,6 +1,7 @@
 import { connect } from 'cloudflare:sockets';
 
-let fallbackAddress = 'ProxyIP.US.CMLiussss.net';
+let authToken = 'af52a2ef-2a34-4937-b26f-9a5883092d66';
+let fallbackAddress = 'ProxyIP.SG.CMLiussss.net';
 let fallbackPort = '443';
 
 const E_INVALID_DATA = atob('aW52YWxpZCBkYXRh');
@@ -82,15 +83,24 @@ async function handleSubscriptionRequest(request, uuid) {
     });
 }
 
-function generateLinksFromSource(list, uuid, workerDomain) {
-    const httpPorts = [80, 8080, 8880, 2052, 2082, 2086, 2095];
+function generateLinksFromSource(list, user, workerDomain) {
+    const defaultHttpPorts = disablePort80 ? [] : [80];
     const links = [];
     const wsPath = encodeURIComponent('/?ed=2048');
-    const proto = 'v' + 'l' + 'e' + 's' + 's';
+    const proto = atob('dmxlc3M=');
 
     list.forEach(item => {
         const nodeNameBase = item.isp.replace(/\s/g, '_');
         const safeIP = item.ip.includes(':') ? `[${item.ip}]` : item.ip;
+        
+        let httpsPorts, httpPorts;
+        if (item.port) {
+            httpsPorts = [item.port];
+            httpPorts = disablePort80 && item.port === 80 ? [] : [item.port];
+        } else {
+            httpsPorts = defaultHttpsPorts;
+            httpPorts = defaultHttpPorts;
+        }
 
         httpPorts.forEach(port => {
             const wsNodeName = `${nodeNameBase}-${port}-WS`;
@@ -102,7 +112,7 @@ function generateLinksFromSource(list, uuid, workerDomain) {
                 host: workerDomain,
                 path: wsPath
             });
-            links.push(`${proto}://${uuid}@${safeIP}:${port}?${wsParams.toString()}#${encodeURIComponent(wsNodeName)}`);
+            links.push(`${proto}://${user}@${safeIP}:${port}?${wsParams.toString()}#${encodeURIComponent(wsNodeName)}`);
         });
     });
     return links;
@@ -172,7 +182,7 @@ async function fetchAndParseWetest(url) {
         const html = await response.text();
         const results = [];
         const rowRegex = /<tr[\s\S]*?<\/tr>/g;
-        const cellRegex = /<td data-label="线路名称">(.+?)<\/td>[\s\S]*?<td data-label="优选地址">([\d.:a-fA-F]+)<\/td>/;
+        const cellRegex = /<td data-label="名称">(.+?)<\/td>[\s\S]*?<td data-label="地址">([\d.:a-fA-F]+)<\/td>/;
 
         let match;
         while ((match = rowRegex.exec(html)) !== null) {
