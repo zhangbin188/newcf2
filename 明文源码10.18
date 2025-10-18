@@ -83,8 +83,8 @@ async function handleSubscriptionRequest(request, uuid) {
     });
 }
 
-function generateLinksFromSource(list, user, workerDomain) {
-    const defaultHttpPorts = disablePort80 ? [] : [80];
+function generateLinksFromSource(list, uuid, workerDomain) {
+    const httpPorts = [80, 8080, 8880, 2052, 2082, 2086, 2095];
     const links = [];
     const wsPath = encodeURIComponent('/?ed=2048');
     const proto = atob('dmxlc3M=');
@@ -92,15 +92,6 @@ function generateLinksFromSource(list, user, workerDomain) {
     list.forEach(item => {
         const nodeNameBase = item.isp.replace(/\s/g, '_');
         const safeIP = item.ip.includes(':') ? `[${item.ip}]` : item.ip;
-        
-        let httpsPorts, httpPorts;
-        if (item.port) {
-            httpsPorts = [item.port];
-            httpPorts = disablePort80 && item.port === 80 ? [] : [item.port];
-        } else {
-            httpsPorts = defaultHttpsPorts;
-            httpPorts = defaultHttpPorts;
-        }
 
         httpPorts.forEach(port => {
             const wsNodeName = `${nodeNameBase}-${port}-WS`;
@@ -112,7 +103,7 @@ function generateLinksFromSource(list, user, workerDomain) {
                 host: workerDomain,
                 path: wsPath
             });
-            links.push(`${proto}://${user}@${safeIP}:${port}?${wsParams.toString()}#${encodeURIComponent(wsNodeName)}`);
+            links.push(`${proto}://${uuid}@${safeIP}:${port}?${wsParams.toString()}#${encodeURIComponent(wsNodeName)}`);
         });
     });
     return links;
